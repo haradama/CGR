@@ -14,9 +14,9 @@ cdef class CGR:
     cdef int k, array_size
     def __cinit__(self, int k_length):        
         self.k = k_length
-        self.array_size = int((4**self.k)**0.5)
+        self.array_size = int((4**k_length)**0.5)
 
-    cdef np.ndarray[DTYPE_FLOAT_t, ndim=2] cgr(self, str seq):
+    cpdef np.ndarray[DTYPE_FLOAT_t, ndim=2] cgr(self, str seq):
         cdef str nucl, fragment
         cdef int index, maxX, maxY, locX, locY, seq_length
 
@@ -27,7 +27,7 @@ cdef class CGR:
         maxX, maxY = self.array_size, self.array_size
         locX, locY = 1, 1
 
-        for index in xrange(seq_length - (self.k - 1)):
+        for index in range(seq_length - (self.k - 1)):
             fragment = seq[index:index + self.k]
             if "N" not in fragment:
                 for nucl in fragment:
@@ -50,9 +50,7 @@ cdef class CGR:
 
         return chaos / (seq_length - (self.k - 1))
     
-
-    
-    cdef get_signatures(self):
+    cpdef get_signatures(self):
         signatures = np.full((self.array_size, self.array_size), "N" * self.k)
 
         cdef int maxX, maxY, locX, locY
@@ -83,5 +81,5 @@ cdef class CGR:
 
         return signatures
 
-cdef double GC(str seq):
+cpdef double GC(str seq):
     return (seq.count("G") + seq.count("C")) / len(seq)
