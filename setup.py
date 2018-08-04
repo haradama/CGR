@@ -8,6 +8,6 @@ setup(
     version = "0.0.1",
     author = "Masafumi Harada",
     cmdclass = {"build_ext": build_ext},
-    ext_modules = [Extension("core", ["pycgr.pyx"])],
+    ext_modules = [Extension("pycgr", ["pycgr.pyx"])],
     include_dirs = [numpy.get_include()]
 )
