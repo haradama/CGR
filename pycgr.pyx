@@ -10,15 +10,13 @@ DTYPE_FLOAT = np.float
 ctypedef np.int_t DTYPE_INT_t
 ctypedef np.float_t DTYPE_FLOAT_t
 
-cdef class CGR:    
-    def __cinit__(self, int k_length):
-        cdef int k
-        cdef int array_size
-        
+cdef class CGR:
+    cdef int k, array_size
+    def __cinit__(self, int k_length):        
         self.k = k_length
         self.array_size = int((4**self.k)**0.5)
 
-    cdef cgr(self, str seq):
+    cdef np.ndarray[DTYPE_FLOAT_t, ndim=2] cgr(self, str seq):
         cdef str nucl, fragment
         cdef int index, maxX, maxY, locX, locY, seq_length
 
