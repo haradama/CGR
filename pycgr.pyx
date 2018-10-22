@@ -20,7 +20,7 @@ cdef class CGR:
         cdef str nucl, fragment
         cdef int index, maxX, maxY, locX, locY, seq_length
 
-        cdef int seq_length = len(seq)
+        seq_length = len(seq)
 
         cdef np.ndarray[DTYPE_INT_t, ndim=2] chaos = np.zeros([self.array_size, self.array_size], dtype=DTYPE_INT)
 
