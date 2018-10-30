@@ -1,3 +1,5 @@
+%%cython
+
 # coding: utf-8
 
 import numpy as np
@@ -28,9 +30,9 @@ cdef class CGR:
     cpdef void add_kmer(self, str kmer):
         assert len(kmer) == self.k, "The added kmer is not a {0}-mer but a {1}-mer".format(str(self.k), str(len(kmer)))
         
+        cdef str nucl
+        cdef int index, maxX, maxY, locX, locY
         if 'N' not in kmer:
-            cdef str nucl
-            cdef int index, maxX, maxY, locX, locY
             maxX, maxY = self.array_size, self.array_size
             locX, locY = 1, 1
 
