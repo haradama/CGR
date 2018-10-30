@@ -5,7 +5,7 @@ import numpy
 
 setup(
     name = "pycgr",
-    version = "0.0.1",
+    version = "0.0.2",
     author = "Masafumi Harada",
     cmdclass = {"build_ext": build_ext},
     ext_modules = [Extension("pycgr", ["pycgr.pyx"])],
