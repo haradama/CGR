@@ -107,7 +107,13 @@ cdef class DenoisedCGR(CGR):
         for index in range(len(seq) - (self.k - 1)):
             self.add(seq[index:index + self.k])
 
-
+def kmerIter(str seq, int k_length):
+    cdef str fragment
+    cdef int i
+    for i in range(len(seq) - (k_length - 1)):
+        fragment = seq[i:i+k_length]
+        yield fragment
+           
 cpdef double get_GC_content(str seq):
     return (seq.count("G") + seq.count("C")) / len(seq)
 
