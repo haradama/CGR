@@ -125,14 +125,17 @@ cdef class MinHash:
         cdef str kmer
         cdef int i, j, kmer_num
         kmer_num = len(seq) - (self.k_length - 1)
-        cdef np.ndarray[double, ndim=2] hash_matrix = np.empty((kmer_num, self.num), dtype=np.double)
+        cdef np.ndarray[double, ndim=2] hash_matrix = np.empty((self.num, kmer_num), dtype=np.double)
         
-        for i in range(kmer_num):
+        for j in range(kmer_num):
             kmer = seq[i:i+self.k_length]
-            for j in range(self.num):
+            for i in range(self.num):
                 hash_matrix[i, j] = hash128(kmer, j)
         
         return hash_matrix.min(axis=1)
+    
+    cpdef double get_concordance(self, np.ndarray[double, ndim=1] array1, np.ndarray[double, ndim=1] array2):
+        return (array1 == array2).sum() / self.num
 
 cpdef double get_GC_content(str seq):
     return (seq.count("G") + seq.count("C")) / len(seq)
