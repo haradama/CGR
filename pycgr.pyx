@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from mmh3 import hash128
 import numpy as np
 cimport numpy as np
 import itertools
@@ -113,7 +114,26 @@ def kmerIter(str seq, int k_length):
     for i in range(len(seq) - (k_length - 1)):
         fragment = seq[i:i+k_length]
         yield fragment
-           
+
+cdef class MinHash:
+    cdef int num, k_length
+    def __cinit__(self, int _num, int _k_length):
+        self.num = _num
+        self.k_length = _k_length
+    
+    cpdef np.ndarray[double, ndim=2] getMin(self, str seq):
+        cdef str kmer
+        cdef int i, j, kmer_num
+        kmer_num = len(seq) - (self.k_length - 1)
+        cdef np.ndarray[double, ndim=2] hash_matrix = np.empty((kmer_num, self.num), dtype=np.double)
+        
+        for i in range(kmer_num):
+            kmer = seq[i:i+self.k_length]
+            for j in range(self.num):
+                hash_matrix[i, j] = hash128(kmer, j)
+        
+        return hash_matrix.min(axis=1)
+
 cpdef double get_GC_content(str seq):
     return (seq.count("G") + seq.count("C")) / len(seq)
 
