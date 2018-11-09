@@ -127,10 +127,10 @@ cdef class MinHash:
         kmer_num = len(seq) - (self.k_length - 1)
         cdef np.ndarray[double, ndim=2] hash_matrix = np.empty((self.num, kmer_num), dtype=np.double)
         
-        for j in range(kmer_num):
+        for i in range(kmer_num):
             kmer = seq[i:i+self.k_length]
-            for i in range(self.num):
-                hash_matrix[i, j] = hash128(kmer, j)
+            for j in range(self.num):
+                hash_matrix[j, i] = hash128(kmer, j)
         
         return hash_matrix.min(axis=1)
     
