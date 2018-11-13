@@ -60,6 +60,8 @@ cdef class CGR:
     
     cpdef void add_seq(self, str seq):
         cdef int index
+        self.cgr_array = np.zeros((self.array_size, self.array_size), dtype=DTYPE_INT)
+        self.num_kmers = 0
         for index in range(len(seq) - (self.k - 1)):
             self.add_kmer(seq[index:index + self.k])
 
